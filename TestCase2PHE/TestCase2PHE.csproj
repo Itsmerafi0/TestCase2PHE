@@ -284,7 +284,6 @@
     <Content Include="Views\Company\PendingCompanies.cshtml" />
     <Content Include="Views\Company\ProccessCompanies.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
-    <Content Include="Views\Company\Edit.cshtml" />
     <Content Include="Views\Approval\TableApproval.cshtml" />
     <Content Include="Views\Vendor\Index.cshtml" />
     <Content Include="Views\Vendor\Create.cshtml" />

@@ -4,8 +4,6 @@
     ViewBag.Title = "Index";
 }
 
-
-
 <h2>Index</h2>
 
 <p>
@@ -30,7 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsApproved)
             </th>
-            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -67,12 +64,18 @@
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsApproved)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Guid }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Guid }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Guid })
+                    @if (item.IsApproved == "pending")
+                    {
+                        <button class="btn btn-danger">@Html.DisplayFor(modelItem => item.IsApproved)</button>
+                    }
+                    else if (item.IsApproved == "proccess")
+                    {
+                        <button class="btn btn-warning">@Html.DisplayFor(modelItem => item.IsApproved)</button>
+                    }
+                    else if (item.IsApproved == "approve")
+                    {
+                        <button class="btn btn-success">@Html.DisplayFor(modelItem => item.IsApproved)</button>
+                    }
                 </td>
             </tr>
 
@@ -82,5 +85,3 @@
 </table>
 
 <link rel="stylesheet" href="~/Content/table.css" asp-append-version="true" />
-
-
