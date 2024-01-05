@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TestCase2PHE.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Register")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                No.
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleGuid)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var index = 1;
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @index
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyGuid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleGuid)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Guid }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Guid }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Guid })
+                </td>
+            </tr>
+
+            index++;
+        }
+    </tbody>
+</table>
+
+
+<link rel="stylesheet" href="~/Content/table.css" asp-append-version="true" />

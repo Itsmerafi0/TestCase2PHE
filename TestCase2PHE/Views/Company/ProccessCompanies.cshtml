@@ -1,0 +1,120 @@
+﻿@model IEnumerable<TestCase2PHE.Models.Company>
+
+@{
+    ViewBag.Title = "ProccessCompanies";
+}
+
+<h2>ProccessCompanies</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyPhoto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsApproved)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @if (item.CompanyPhoto != null && item.CompanyPhoto.Length > 0)
+                {
+                    var base64 = Convert.ToBase64String(item.CompanyPhoto);
+                    <a href="#" onclick="displayImageModal('@base64')">
+                        <img src="data:image/jpg;base64,@base64" width="100px" alt="Image" />
+                    </a>
+                }
+                else
+                {
+                    <!-- Handle the case where UploadImage is empty or null -->
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsApproved)
+            </td>
+            <td>
+                @if (item.IsApproved != "approve")
+                {
+                    <button class="approve-button btn btn-success" data-vendor-guid="@item.Guid">Approve</button>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+
+    function approveVendor(guid, buttonElement) {
+        $.ajax({
+            url: '/Company/CompanyApprove',
+            type: 'POST',
+            data: { guid: guid },
+            success: function (data) {
+                // Handle the success response if needed
+                console.log(data);
+
+                // Hide the "Approve" button after approval
+                $(buttonElement).hide();
+
+                // Create a new approval after successful vendor approval, using guid as company_guid
+                createNewApproval(guid);
+            },
+            error: function (error) {
+                // Handle the error response if needed
+                console.error(error);
+            }
+        });
+    }
+
+    function createNewApproval(companyGuid) {
+        $.ajax({
+            url: '/Approval/Create',
+            type: 'POST',
+            data: { companyGuid: companyGuid },
+            success: function (data) {
+                // Handle the success response if needed
+                console.log(data);
+            },
+            error: function (error) {
+                // Handle the error response if needed
+                console.error(error);
+            }
+        });
+    }
+
+    // Handle click event for the "Approve" button
+    $('.approve-button').on('click', function () {
+        var vendorGuid = $(this).data('vendor-guid');
+        approveVendor(vendorGuid, this);
+    });
+
+
+</script>

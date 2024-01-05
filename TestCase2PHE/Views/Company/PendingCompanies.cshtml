@@ -1,0 +1,100 @@
+﻿@model IEnumerable<TestCase2PHE.Models.Company>
+
+@{
+    ViewBag.Title = "PendingCompanies";
+}
+
+<h2>PendingCompanies</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyPhoto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsApproved)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @if (item.CompanyPhoto != null && item.CompanyPhoto.Length > 0)
+                {
+                    var base64 = Convert.ToBase64String(item.CompanyPhoto);
+                    <a href="#" onclick="displayImageModal('@base64')">
+                        <img src="data:image/jpg;base64,@base64" width="100px" alt="Image" />
+                    </a>
+                }
+                else
+                {
+                    <!-- Handle the case where UploadImage is empty or null -->
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsApproved)
+            </td>
+            <td>
+                @if (item.IsApproved != "process")
+                {
+                    <button class="approve-button btn btn-success" data-vendor-guid="@item.Guid">Approve</button>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+
+    function approveVendor(guid, buttonElement) {
+        $.ajax({
+            url: '/Company/CompanyAccept', // Sesuaikan dengan nama controller Anda
+            type: 'POST',
+            data: { guid: guid },
+            success: function (data) {
+                // Handle the success response (jika diperlukan)
+                console.log(data);
+
+                // Sembunyikan tombol "Approve" setelah menyetujui
+                $(buttonElement).hide();
+            },
+            error: function (error) {
+                // Handle the error response (jika diperlukan)
+                console.error(error);
+            }
+        });
+    }
+
+    // Fungsi untuk menangani klik tombol "Approve"
+    $('.approve-button').on('click', function () {
+        var vendorGuid = $(this).data('vendor-guid');
+        approveVendor(vendorGuid, this);
+    });
+
+</script>

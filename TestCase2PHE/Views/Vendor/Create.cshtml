@@ -1,0 +1,103 @@
+﻿@model TestCase2PHE.Models.Vendor
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Vendor</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Guid) <!-- Hidden field for Guid -->
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BusinessField, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.BusinessField, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BusinessField, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CompanyType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CompanyType, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <!-- Display the dropdown for CompanyGuid -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.CompanyGuid, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.CompanyGuid, new SelectList(new List<SelectListItem>()), "Select Company", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CompanyGuid, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+
+    function fetchCompaniesAndPopulateDropdown(selectedCompanyId) {
+        // Fetch companies and populate the dropdown on document ready
+        $.ajax({
+            type: "GET",
+            url: '/Company/GetCompanies', // Adjust the URL based on your actual endpoint
+            dataType: "json",
+            success: function (data) {
+                var dropdown = $("#CompanyGuid");
+                dropdown.empty();
+                dropdown.append('<option value="">Select Company</option>');
+                $.each(data, function (key, entry) {
+                    var option = $('<option></option>').attr('value', entry.Guid).text(entry.Name);
+
+                    // Set the selected attribute if the entry.Id matches the selectedCompanyId
+                    if (entry.Id === selectedCompanyId) {
+                        option.attr('selected', 'selected');
+                    }
+
+                    dropdown.append(option);
+                });
+            },
+            error: function (error) {
+                // Handle the error response (if needed)
+                console.error(error);
+            }
+        });
+    }
+
+    // Assume selectedCompanyId is a variable holding the GUID for the selected company
+    var selectedCompanyId = 'some-guid'; // Replace with the actual GUID
+
+    // Call the function to fetch companies and populate the dropdown on document ready
+    $(document).ready(function () {
+        fetchCompaniesAndPopulateDropdown(selectedCompanyId);
+    });
+
+</script>
+

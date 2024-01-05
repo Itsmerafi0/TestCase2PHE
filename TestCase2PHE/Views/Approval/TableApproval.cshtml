@@ -1,0 +1,39 @@
+@model IEnumerable<TestCase2PHE.Models.ApprovalVM>
+
+@{
+    ViewBag.Title = "TableApproval";
+}
+
+<h2>TableApproval</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>@Html.DisplayNameFor(model => model.Guid)</th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.CompanyGuid)</th>
+            <th>@Html.DisplayNameFor(model => model.BusinessField)</th>
+            <th>@Html.DisplayNameFor(model => model.CompanyType)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@Html.DisplayFor(modelItem => Model.ElementAt(i).Guid)</td>
+                <td>@Html.DisplayFor(modelItem => Model.ElementAt(i).Name)</td>
+                <td>@Html.DisplayFor(modelItem => Model.ElementAt(i).Email)</td>
+                <td>@Html.DisplayFor(modelItem => Model.ElementAt(i).PhoneNumber)</td>
+                <td>@Html.DisplayFor(modelItem => Model.ElementAt(i).CompanyGuid)</td>
+                <td>@Html.DisplayFor(modelItem => Model.ElementAt(i).BusinessField)</td>
+                <td>@Html.DisplayFor(modelItem => Model.ElementAt(i).CompanyType)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<link rel="stylesheet" href="~/Content/table.css" asp-append-version="true" />

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TestCase2PHE.Models.Role>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var index = 1;
+            }
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @index
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { Guid = item.Guid }, new { @class = "btn btn-primary btn-sm" })
+                        @Html.ActionLink("Delete", "Delete", new { Guid = item.Guid }, new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                </tr>
+
+                index++;
+            }
+        </tbody>
+    </table>
+</div>
+
+<link rel="stylesheet" href="~/Content/table.css" asp-append-version="true" />

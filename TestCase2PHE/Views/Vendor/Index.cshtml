@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TestCase2PHE.Models.Vendor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            No
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BusinessField)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyGuid)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index + 1 }))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value.BusinessField)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value.CompanyType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value.CompanyGuid)
+            </td>
+        </tr>
+    }
+
+</table>
+<link rel="stylesheet" href="~/Content/table.css" asp-append-version="true" />

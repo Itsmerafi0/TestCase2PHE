@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        /* Custom styling for the dropdown menu links */
+        .dropdown-menu a {
+            color: #333 !important; /* Set your desired color */
+        }
+
+        /* Custom styling for the navigation bar */
+        .navbar {
+            background-color: #343a40; /* Dark background color */
+        }
+
+        .navbar-brand {
+            color: #ffffff !important; /* White text color for brand */
+        }
+
+        .navbar-toggler-icon {
+            background-color: #ffffff; /* White color for toggler icon */
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important; /* White text color for navigation links */
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #007bff !important; /* Highlight color on hover */
+            }
+
+        /* Custom styling for the body content */
+        .container.body-content {
+            margin-top: 20px;
+        }
+
+        /* Custom styling for the footer */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #343a40; /* Dark background color */
+            color: #ffffff; /* White text color */
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            @Html.ActionLink("Application Name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Approval", "TableApproval", "Approval", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="companyDropdown" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Company</a>
+                        <div class="dropdown-menu" aria-labelledby="companyDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Company", new { area = "" })">All Companies</a>
+                            <a class="dropdown-item" href="@Url.Action("PendingCompanies", "Company", new { area = "", status = "pending" })">Pending Companies</a>
+                            <a class="dropdown-item" href="@Url.Action("ProccessCompanies", "Company", new { area = "", status = "process" })">Process Companies</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">@Html.ActionLink("Role", "Index", "Role", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("User", "Index", "User", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Vendor", "Index", "Vendor", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+                <div class="navbar-text">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span class="text-light">Role: @User.Identity.Name</span>
+                        <span class="text-light"> | </span>
+                        <span class="text-light">RoleGuid: @(HttpContext.Current.Request.Cookies["UserRole"]?.Value)</span>
+                        @Html.ActionLink("Logout", "Logout", "User", new { area = "" }, new { @class = "nav-link" })
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">Login/Register</a>
+                                <div class="dropdown-menu" aria-labelledby="loginDropdown">
+                                    <a class="dropdown-item" href="@Url.Action("Login", "User", new { area = "" })">Login</a>
+                                    <a class="dropdown-item" href="@Url.Action("Register", "User", new { area = "" })">Register</a>
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
